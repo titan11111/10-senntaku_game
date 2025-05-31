@@ -1,272 +1,332 @@
-// ゲームデータ
-const quizData = [
-    { question: "レモンジュース", answer: "酸性", explanation: "レモンジュースにはクエン酸が含まれており、強い酸性を示します。pH値は2〜3程度です。" },
-    { question: "重曹水", answer: "アルカリ性", explanation: "重曹（炭酸水素ナトリウム）は水に溶かすと弱アルカリ性を示します。pH値は8〜9程度です。" },
-    { question: "水道水", answer: "中性", explanation: "日本の水道水は飲料用として供給されており、pH値は中性（7.0）に保たれています。地域によって多少の差はあります。" },
-    { question: "コーラ", answer: "酸性", explanation: "コーラにはリン酸や炭酸が含まれているため、酸性を示します。pH値は2.5〜3.5程度です。" },
-    { question: "石鹸水", answer: "アルカリ性", explanation: "一般的な石鹸は油脂をアルカリで分解して作られるため、石鹸水はアルカリ性を示します。洗浄力があります。" },
-    { question: "お酢", answer: "酸性", explanation: "お酢には酢酸が含まれており、強い酸性を示します。pH値は2〜3程度です。" },
-    { question: "牛乳", answer: "中性", explanation: "牛乳のpH値は6.7程度と、ほぼ中性に近いです。わずかに酸性に傾くこともあります。" },
-    { question: "オレンジジュース", answer: "酸性", explanation: "オレンジジュースにはクエン酸やアスコルビン酸（ビタミンC）が含まれており、酸性を示します。pH値は3〜4程度です。" },
-    { question: "アンモニア水", answer: "アルカリ性", explanation: "アンモニアは水に溶けると水酸化アンモニウムとなり、強いアルカリ性を示します。刺激臭があります。" },
-    { question: "純水", answer: "中性", explanation: "不純物が一切含まれない純粋な水は、中性（pH 7.0）です。電気はほとんど通しません。" },
-    { question: "胃液", answer: "酸性", explanation: "胃液には消化酵素のペプシンが働くための塩酸が含まれており、非常に強い酸性（pH 1〜2）を示します。" },
-    { question: "卵白", answer: "アルカリ性", explanation: "卵白は、鮮度が落ちるにつれて二酸化炭素が放出され、アルカリ性に傾きます。pH値は8〜9程度です。" },
-    { question: "雨水", answer: "酸性", explanation: "大気中の二酸化炭素が溶け込むため、通常の雨水はわずかに酸性（pH 5.6程度）を示します。工場排煙などの影響でより酸性になることもあります。" },
-    { question: "海水", answer: "アルカリ性", explanation: "海水には様々な塩類が溶け込んでおり、弱アルカリ性（pH 8.0〜8.3程度）を示します。" },
-    { question: "涙", answer: "中性", explanation: "人間の涙は目の刺激を防ぐため、血液と同じくほぼ中性（pH 7.4程度）に保たれています。" },
-    { question: "コーヒー", answer: "酸性", explanation: "コーヒー豆に含まれるクエン酸やリンゴ酸などにより、コーヒーは酸性を示します。pH値は5程度です。" },
-    { question: "石灰水", answer: "アルカリ性", explanation: "水酸化カルシウムを水に溶かした石灰水は、強いアルカリ性を示します。二酸化炭素を検出する実験にも使われます。" },
-    { question: "血液", answer: "アルカリ性", explanation: "人間の血液は、生命維持のために非常に厳密に弱アルカリ性（pH 7.35〜7.45）に保たれています。" },
-    { question: "ワイン", answer: "酸性", explanation: "ワインには酒石酸やリンゴ酸などが含まれており、酸性を示します。pH値は3〜4程度です。" },
-    { question: "唾液", answer: "中性", explanation: "人間の唾液は、pH値が6.7〜7.4程度のほぼ中性です。消化酵素アミラーゼを含みます。" },
-    { question: "トマトジュース", answer: "酸性", explanation: "トマトにはクエン酸やリンゴ酸などが含まれており、トマトジュースは酸性を示します。pH値は4〜5程度です。" },
-    { question: "漂白剤", answer: "アルカリ性", explanation: "家庭用の多くの漂白剤は、次亜塩素酸ナトリウムなどのアルカリ性物質を含み、強いアルカリ性を示します。取り扱いには注意が必要です。" },
-    { question: "緑茶", answer: "酸性", explanation: "緑茶にはカテキンやカフェインなどが含まれており、わずかに酸性（pH 6程度）を示します。" },
-    { question: "ベーキングパウダー水", answer: "アルカリ性", explanation: "ベーキングパウダーは重曹と酸性剤の混合物ですが、水に溶かすと重曹の作用で弱アルカリ性を示します。" }
-];
-
-// ゲーム状態管理
-let currentQuestion = 0;
-let score = 0;
-let gameQuestions = [];
-let isAnswered = false;
-
-// DOM要素の取得
-const startScreen = document.getElementById('startScreen');
-const gameScreen = document.getElementById('gameScreen');
-const resultScreen = document.getElementById('resultScreen');
-const startButton = document.getElementById('startButton');
-const restartButton = document.getElementById('restartButton');
-const questionText = document.getElementById('questionText');
-const questionNum = document.getElementById('questionNum');
-const scoreDisplay = document.getElementById('score');
-const characterFace = document.getElementById('characterFace');
-const feedback = document.getElementById('feedback');
-const feedbackText = document.getElementById('feedbackText');
-const finalScore = document.getElementById('finalScore');
-const resultMessage = document.getElementById('resultMessage');
-const resultCharacter = document.getElementById('resultCharacter');
-const resultTitle = document.getElementById('resultTitle');
-const choiceButtons = document.querySelectorAll('.choice-button');
-
-// 音声読み上げ機能
-function speak(text) {
-    if ('speechSynthesis' in window) {
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'ja-JP';
-        utterance.rate = 1.0;
-        utterance.pitch = 1.2;
-        speechSynthesis.speak(utterance);
-    }
-}
-
-// ゲーム初期化
-function initGame() {
-    currentQuestion = 0;
-    score = 0;
-    isAnswered = false;
-    
-    // 問題をシャッフルして10問選択
-    const shuffled = [...quizData].sort(() => Math.random() - 0.5);
-    gameQuestions = shuffled.slice(0, 10);
-    
-    updateDisplay();
-    showQuestion();
-}
-
-// 表示更新
-function updateDisplay() {
-    questionNum.textContent = currentQuestion + 1;
-    scoreDisplay.textContent = score;
-}
-
-// 問題表示
-function showQuestion() {
-    if (currentQuestion >= gameQuestions.length) {
-        showResult();
-        return;
-    }
-    
-    const question = gameQuestions[currentQuestion];
-    questionText.textContent = question.question;
-    characterFace.textContent = '🤔';
-    characterFace.className = 'character-face';
-    feedback.classList.add('hidden');
-    feedback.className = 'feedback hidden'; // Reset class for transitions
-    gameScreen.className = 'screen'; // Reset background class
-    isAnswered = false;
-    
-    // ボタンを有効化
-    choiceButtons.forEach(button => {
-        button.disabled = false;
-        button.style.opacity = '1';
-    });
-    
-    // 問題を読み上げ
-    speak(question.question + 'は何性でしょう？');
-}
-
-// 回答処理
-function handleAnswer(selectedAnswer) {
-    if (isAnswered) return;
-    
-    isAnswered = true;
-    const correctAnswer = gameQuestions[currentQuestion].answer;
-    const isCorrect = selectedAnswer === correctAnswer;
-    
-    // ボタンを無効化
-    choiceButtons.forEach(button => {
-        button.disabled = true;
-        button.style.opacity = '0.6';
-    });
-    
-    if (isCorrect) {
-        score++;
-        showCorrectFeedback();
-    } else {
-        showIncorrectFeedback(correctAnswer);
-    }
-    
-    updateDisplay();
-    
-    // 2.5秒後に次の問題へ
-    setTimeout(() => {
-        currentQuestion++;
-        showQuestion();
-    }, 2500); // 2.5秒に変更
-}
-
-// 正解フィードバック
-function showCorrectFeedback() {
-    characterFace.textContent = '😊';
-    characterFace.className = 'character-face correct';
-    
-    feedback.className = 'feedback correct';
-    const explanation = gameQuestions[currentQuestion].explanation; // 解説を取得
-    feedbackText.innerHTML = `🎉 正解！すごいね！<br><span class="explanation">${explanation}</span>`; // 解説を追加
-    feedback.classList.remove('hidden');
-    
-    gameScreen.className = 'screen correct-bg';
-    
-    speak('正解！すごいね！' + explanation); // 音声読み上げにも追加
-}
-
-// 不正解フィードバック
-function showIncorrectFeedback(correctAnswer) {
-    characterFace.textContent = '😅';
-    characterFace.className = 'character-face incorrect';
-    
-    feedback.className = 'feedback incorrect';
-    const explanation = gameQuestions[currentQuestion].explanation; // 解説を取得
-    feedbackText.innerHTML = `😔 残念！正解は「${correctAnswer}」だよ<br><span class="explanation">${explanation}</span>`; // 解説を追加
-    feedback.classList.remove('hidden');
-    
-    gameScreen.className = 'screen incorrect-bg';
-    
-    speak(`残念！正解は${correctAnswer}だよ。${explanation}`); // 音声読み上げにも追加
-}
-
-// 結果表示
-function showResult() {
-    gameScreen.classList.add('hidden');
-    resultScreen.classList.remove('hidden');
-    
-    finalScore.textContent = score;
-    
-    let message = '';
-    let character = '';
-    let title = '';
-    
-    if (score >= 9) {
-        title = '🏆 パーフェクト博士！';
-        character = '🥇';
-        message = 'すごい！君は酸アル博士だ！！';
-    } else if (score >= 7) {
-        title = '🎖️ 酸アル上級者！';
-        character = '🥈';
-        message = 'とても良くできました！';
-    } else if (score >= 5) {
-        title = '📚 勉強家さん！';
-        character = '🥉';
-        message = 'なかなか良い成績だね！';
-    } else if (score >= 3) {
-        title = '🌱 成長中！';
-        character = '😊';
-        message = 'もう少し頑張ろう！';
-    } else {
-        title = '💪 挑戦者！';
-        character = '😅';
-        message = 'また挑戦してみてね！';
-    }
-    
-    resultTitle.textContent = title;
-    resultCharacter.textContent = character;
-    resultMessage.textContent = message;
-    
-    speak(`${score}問正解！${message}`);
-}
-
-// 画面切り替え
-function showScreen(screen) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
-    screen.classList.remove('hidden');
-}
-
-// イベントリスナー設定
-startButton.addEventListener('click', () => {
-    showScreen(gameScreen);
-    initGame();
-});
-
-restartButton.addEventListener('click', () => {
-    showScreen(gameScreen);
-    initGame();
-});
-
-choiceButtons.forEach(button => {
-    button.addEventListener('click', (e) => {
-        if (!isAnswered) {
-            const answer = e.target.getAttribute('data-answer');
-            handleAnswer(answer);
-        }
-    });
-});
-
-// タッチデバイス対応
-choiceButtons.forEach(button => {
-    button.addEventListener('touchstart', (e) => {
-        // e.preventDefault() は、クリックイベントの二重発火や、長押しによるコンテキストメニュー表示などを防ぐために使用しますが、
-        // スクロールを阻害する可能性があるので、ここではコメントアウトします。
-        // 代わりに CSS で touch-action: manipulation; を設定して、タップとスクロールの認識を改善します。
-        // e.preventDefault(); 
-        if (!isAnswered) {
-            const answer = e.target.getAttribute('data-answer');
-            handleAnswer(answer);
-        }
-    }, { passive: false }); // passive: false を設定
-});
-
-
-// ページ読み込み時
 document.addEventListener('DOMContentLoaded', () => {
-    speak('酸アルバトルへようこそ！液体の性質を当てるゲームです！');
-});
+    // --- DOM要素の取得 ---
+    const mainScreen = document.getElementById('main-screen');
+    const quizScreen = document.getElementById('quiz-screen');
+    const resultScreen = document.getElementById('result-screen');
+    const maouWinScreen = document.getElementById('maou-win-screen');
 
-// キーボード操作対応（PCでも遊べるように）
-document.addEventListener('keydown', (e) => {
-    // ゲーム画面が表示中で、かつ回答済みでない場合のみキー入力を受け付ける
-    if (gameScreen.classList.contains('hidden') || isAnswered) return;
-    
-    switch(e.key) {
-        case '1':
-            handleAnswer('酸性');
-            break;
-        case '2':
-            handleAnswer('中性');
-            break;
-        case '3':
-            handleAnswer('アルカリ性');
-            break;
+    const displayPoints = document.getElementById('display-points');
+    const categoryButtons = document.querySelectorAll('.category-btn');
+    const maouBattleBtn = document.getElementById('maou-battle-btn');
+    const resetPointsBtn = document.getElementById('reset-points-btn');
+    const mainMessage = document.getElementById('main-message');
+
+    const quizCategoryTitle = document.getElementById('quiz-category-title');
+    const timeLeftSpan = document.getElementById('time-left');
+    const currentQuestionNumSpan = document.getElementById('current-question-num');
+    const enemyImage = document.getElementById('enemy-image');
+    const questionText = document.getElementById('question-text');
+    const optionButtons = document.querySelectorAll('.option-btn');
+    const skipQuestionBtn = document.getElementById('skip-question-btn');
+
+    const finalScoreSpan = document.getElementById('final-score');
+    const correctAnswersCountSpan = document.getElementById('correct-answers-count');
+    const resultMessage = document.getElementById('result-message');
+    const backToMainBtn = document.getElementById('back-to-main-btn');
+    const restartGameBtn = document.getElementById('restart-game-btn');
+
+    // --- 音声要素の取得 ---
+    const fieldAudio = document.getElementById('field-audio');
+    const seikaiAudio = document.getElementById('seikai-audio');
+    const fuseikaiAudio = document.getElementById('fuseikai-audio');
+    const levelupAudio = document.getElementById('levelup-audio');
+    const maouAudio = document.getElementById('maou-audio');
+    const sentouAudio = document.getElementById('sentou-audio');
+
+    // --- ゲームの状態変数 ---
+    let totalPoints = 0;
+    let currentQuizData = []; // 現在のカテゴリのクイズデータ
+    let currentQuestionIndex = 0;
+    let correctAnswersInQuiz = 0;
+    let timer;
+    let timeLeft = 10;
+    const QUIZ_QUESTIONS_PER_CATEGORY = 5;
+    const POINTS_TO_UNLOCK_MAOU = 30;
+    let quizCategory = '';
+    let isMaouBattle = false; // 魔王戦中かどうか
+
+    // --- クイズデータ ---
+    let allQuizData = {}; // quizData.jsonから読み込むデータ
+
+    // --- 初期化処理 ---
+    function initializeGame() {
+        loadGameData();
+        updateMainScreen();
+        showScreen(mainScreen);
+        playAudio(fieldAudio);
     }
+
+    // --- 画面切り替え関数 ---
+    function showScreen(screenToShow) {
+        document.querySelectorAll('.screen').forEach(screen => {
+            screen.classList.remove('active');
+        });
+        screenToShow.classList.add('active');
+    }
+
+    // --- 音声再生関数 ---
+    function playAudio(audioElement, loop = false) {
+        // 現在再生中のループ音があれば停止
+        if (fieldAudio.paused === false && fieldAudio.loop) fieldAudio.pause();
+        if (sentouAudio.paused === false && sentouAudio.loop) sentouAudio.pause();
+        if (maouAudio.paused === false && maouAudio.loop) maouAudio.pause();
+
+        audioElement.currentTime = 0; // 最初から再生
+        audioElement.loop = loop;
+        audioElement.play().catch(e => console.log("音声再生エラー:", e)); // ユーザー操作なしの自動再生はエラーになる可能性
+    }
+
+    function stopAudio(audioElement) {
+        audioElement.pause();
+        audioElement.currentTime = 0;
+    }
+
+    // --- ゲームデータの保存・読み込み ---
+    function saveGameData() {
+        localStorage.setItem('knowledgeBattlePoints', totalPoints);
+        localStorage.setItem('knowledgeBattleMaouUnlocked', totalPoints >= POINTS_TO_UNLOCK_MAOU);
+        console.log("ゲームデータを保存しました:", totalPoints);
+    }
+
+    function loadGameData() {
+        const savedPoints = localStorage.getItem('knowledgeBattlePoints');
+        if (savedPoints !== null) {
+            totalPoints = parseInt(savedPoints, 10);
+        } else {
+            totalPoints = 0;
+        }
+        updateMainScreen();
+        console.log("ゲームデータを読み込みました:", totalPoints);
+    }
+
+    // --- メイン画面の更新 ---
+    function updateMainScreen() {
+        displayPoints.textContent = totalPoints;
+        if (totalPoints >= POINTS_TO_UNLOCK_MAOU) {
+            maouBattleBtn.disabled = false;
+            mainMessage.textContent = '魔王との戦いが解放された！';
+        } else {
+            maouBattleBtn.disabled = true;
+            mainMessage.textContent = `あと${POINTS_TO_UNLOCK_MAOU - totalPoints}ポイントで魔王に挑戦できるぞ！`;
+        }
+    }
+
+    // --- クイズの開始 ---
+    async function startQuiz(category) {
+        quizCategory = category;
+        isMaouBattle = (category === 'Maou');
+
+        try {
+            if (Object.keys(allQuizData).length === 0) { // まだデータが読み込まれていなければ読み込む
+                const response = await fetch('quizData.json');
+                allQuizData = await response.json();
+            }
+
+            let availableQuestions;
+            if (isMaouBattle) {
+                availableQuestions = allQuizData['Maou'];
+                if (!availableQuestions || availableQuestions.length === 0) {
+                    alert('魔王戦のデータがありません！開発者にお知らせください。');
+                    return;
+                }
+            } else {
+                availableQuestions = allQuizData[category];
+                if (!availableQuestions || availableQuestions.length < QUIZ_QUESTIONS_PER_CATEGORY) {
+                    alert('このカテゴリにはまだ問題が少ないようです...別のカテゴリを選んでね！');
+                    return;
+                }
+            }
+            
+            // 問題をランダムに5問選択
+            currentQuizData = [];
+            const shuffledQuestions = [...availableQuestions].sort(() => 0.5 - Math.random());
+            currentQuizData = shuffledQuestions.slice(0, QUIZ_QUESTIONS_PER_CATEGORY);
+            
+            currentQuestionIndex = 0;
+            correctAnswersInQuiz = 0;
+            quizCategoryTitle.textContent = isMaouBattle ? '魔王戦！' : category + 'クイズ';
+            showScreen(quizScreen);
+            
+            if (isMaouBattle) {
+                playAudio(maouAudio, true);
+                enemyImage.src = 'images/maou.png'; // 魔王の画像
+            } else {
+                playAudio(sentouAudio, true);
+                enemyImage.src = `images/enemy${Math.floor(Math.random() * 10) + 1}.png`; // ランダムな敵キャラ
+            }
+
+            loadQuestion();
+        } catch (error) {
+            console.error('クイズデータの読み込みまたは開始に失敗しました:', error);
+            alert('クイズの準備中にエラーが発生しました。時間を置いてもう一度試してください。');
+            showScreen(mainScreen); // エラー時はメイン画面に戻す
+            playAudio(fieldAudio, true);
+        }
+    }
+
+    // --- 問題の読み込みと表示 ---
+    function loadQuestion() {
+        if (currentQuestionIndex >= QUIZ_QUESTIONS_PER_CATEGORY) {
+            endQuiz();
+            return;
+        }
+
+        resetOptionsStyle();
+        const question = currentQuizData[currentQuestionIndex];
+        questionText.textContent = question.question;
+        question.options.forEach((option, index) => {
+            optionButtons[index].textContent = option;
+            optionButtons[index].disabled = false; // ボタンを有効化
+        });
+
+        currentQuestionNumSpan.textContent = currentQuestionIndex + 1;
+        startTimer();
+    }
+
+    // --- タイマー処理 ---
+    function startTimer() {
+        clearInterval(timer);
+        timeLeft = 10;
+        timeLeftSpan.textContent = timeLeft;
+        timer = setInterval(() => {
+            timeLeft--;
+            timeLeftSpan.textContent = timeLeft;
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                handleAnswer(null); // 時間切れ
+            }
+        }, 1000);
+    }
+
+    function stopTimer() {
+        clearInterval(timer);
+    }
+
+    // --- 回答処理 ---
+    function handleAnswer(selectedIndex) {
+        stopTimer();
+        const question = currentQuizData[currentQuestionIndex];
+        const correctAnswerIndex = question.correct;
+
+        // すべての選択肢を無効化
+        optionButtons.forEach(btn => btn.disabled = true);
+
+        if (selectedIndex === correctAnswerIndex) {
+            correctAnswersInQuiz++;
+            totalPoints += 1; // 正解で1ポイント
+            playAudio(seikaiAudio);
+            optionButtons[selectedIndex].classList.add('correct');
+        } else {
+            playAudio(fuseikaiAudio);
+            if (selectedIndex !== null) { // 時間切れでなければ不正解のボタンを赤くする
+                optionButtons[selectedIndex].classList.add('wrong');
+            }
+            optionButtons[correctAnswerIndex].classList.add('correct'); // 正解のボタンを緑にする
+        }
+
+        saveGameData();
+        updateMainScreen(); // ポイント表示を更新
+
+        // 次の問題へ進むか、結果画面へ
+        setTimeout(() => {
+            currentQuestionIndex++;
+            loadQuestion();
+        }, 1500); // 1.5秒後に次の問題へ
+    }
+
+    // --- オプションボタンのスタイルをリセット ---
+    function resetOptionsStyle() {
+        optionButtons.forEach(btn => {
+            btn.classList.remove('correct', 'wrong');
+        });
+    }
+
+    // --- クイズ終了処理 ---
+    function endQuiz() {
+        stopAudio(sentouAudio);
+        stopAudio(maouAudio);
+
+        if (isMaouBattle) {
+            if (correctAnswersInQuiz >= QUIZ_QUESTIONS_PER_CATEGORY) { // 魔王戦は全問正解で勝利
+                showScreen(maouWinScreen);
+                stopAudio(fieldAudio); // 勝利画面ではフィールド音楽も止める
+                playAudio(levelupAudio); // レベルアップ音を勝利音として流す
+            } else {
+                showResultScreen('残念！魔王は強かった...また挑戦しよう！');
+            }
+        } else {
+            if (correctAnswersInQuiz >= QUIZ_QUESTIONS_PER_CATEGORY / 2) { // 半分以上正解でメッセージ
+                playAudio(levelupAudio);
+                showResultScreen('よくやった！知識がレベルアップしたぞ！');
+            } else {
+                showResultScreen('もう少し頑張ろう！');
+            }
+        }
+    }
+
+    // --- 結果画面の表示 ---
+    function showResultScreen(message) {
+        finalScoreSpan.textContent = totalPoints;
+        correctAnswersCountSpan.textContent = correctAnswersInQuiz;
+        resultMessage.textContent = message;
+        showScreen(resultScreen);
+        playAudio(fieldAudio, true); // メインBGMに戻す
+    }
+
+    // --- デバッグ機能：ポイントリセット ---
+    function resetPoints() {
+        if (confirm('本当にポイントをリセットしますか？')) {
+            totalPoints = 0;
+            saveGameData();
+            updateMainScreen();
+            mainMessage.textContent = 'ポイントがリセットされたぞ！';
+        }
+    }
+
+    // --- デバッグ機能：問題スキップ ---
+    function skipQuestion() {
+        if (confirm('現在の問題をスキップして次の問題に進みますか？')) {
+            stopTimer();
+            currentQuestionIndex++;
+            loadQuestion();
+        }
+    }
+
+    // --- イベントリスナー ---
+    categoryButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            startQuiz(button.dataset.category);
+        });
+    });
+
+    maouBattleBtn.addEventListener('click', () => {
+        if (totalPoints >= POINTS_TO_UNLOCK_MAOU) {
+            startQuiz('Maou');
+        } else {
+            alert(`魔王に挑戦するには、あと${POINTS_TO_UNLOCK_MAOU - totalPoints}ポイント必要だ！`);
+        }
+    });
+
+    optionButtons.forEach((button, index) => {
+        button.addEventListener('click', () => handleAnswer(index));
+    });
+
+    backToMainBtn.addEventListener('click', () => {
+        showScreen(mainScreen);
+        playAudio(fieldAudio, true);
+    });
+
+    restartGameBtn.addEventListener('click', () => {
+        if (confirm('ゲームを最初からやり直しますか？現在のポイントもリセットされます。')) {
+            totalPoints = 0;
+            saveGameData();
+            initializeGame(); // 全体を初期化してメイン画面へ
+        }
+    });
+
+    resetPointsBtn.addEventListener('click', resetPoints);
+    skipQuestionBtn.addEventListener('click', skipQuestion);
+
+    // --- ページ読み込み時の初期化 ---
+    initializeGame();
 });
