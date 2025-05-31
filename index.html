@@ -1,65 +1,80 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>バトルクイズゲーム</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>知識バトル</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="container">
-    <div class="game-header">
-      <h1>バトルクイズゲーム</h1>
-      <p>液体の性質を当ててみよう！</p>
+    <audio id="field-audio" src="audio/field.mp3" loop></audio>
+    <audio id="seikai-audio" src="audio/seikai2.mp3"></audio>
+    <audio id="fuseikai-audio" src="audio/fuseikai2.mp3"></audio>
+    <audio id="levelup-audio" src="audio/levelup.mp3"></audio>
+    <audio id="maou-audio" src="audio/maou.mp3"></audio>
+    <audio id="sentou-audio" src="audio/sentou.mp3"></audio>
+
+    <div id="game-container">
+        <div id="main-screen" class="screen active">
+            <h1>知識バトル</h1>
+            <p class="current-points">現在のポイント: <span id="display-points">0</span></p>
+            <div class="category-grid">
+
+    <button class="category-btn" data-category="国語">国語</button>
+    <button class="category-btn" data-category="理科">理科</button>
+    <button class="category-btn" data-category="社会">社会</button>
+    <button class="category-btn" data-category="算数">算数</button>
+    <button class="category-btn" data-category="英語">英語</button>
+    <button class="category-btn" data-category="あたしんち">あたしんち</button> 
+    <button class="category-btn" data-category="ドラえもん">ドラえもん</button>
+    <button class="category-btn" data-category="ぼっちざロック">ぼっちざろっく！</button>
+    <button class="category-btn" data-category="甘いもの">甘いもの</button>
+</div>
+            <button id="maou-battle-btn" class="maou-btn" disabled>魔王に挑戦！</button>
+            <div class="debug-controls">
+                <button id="reset-points-btn">ポイントリセット</button>
+            </div>
+            <p class="message-area" id="main-message"></p>
+        </div>
+
+        <div id="quiz-screen" class="screen">
+            <h2 id="quiz-category-title"></h2>
+            <div class="quiz-status">
+                <p>のこり時間: <span id="time-left">10</span>秒</p>
+                <p>いま何問目: <span id="current-question-num">1</span> / 5</p>
+            </div>
+            <div class="quiz-area">
+                <div class="enemy-area">
+                    <img id="enemy-image" src="images/enemy1.png" alt="敵キャラクター" class="enemy-char">
+                </div>
+                <p id="question-text"></p>
+                <div class="options-grid">
+                    <button class="option-btn" data-option="0"></button>
+                    <button class="option-btn" data-option="1"></button>
+                    <button class="option-btn" data-option="2"></button>
+                    <button class="option-btn" data-option="3"></button>
+                </div>
+            </div>
+            <button id="skip-question-btn" class="debug-btn">問題スキップ（デバッグ）</button>
+        </div>
+
+        <div id="result-screen" class="screen">
+            <h2>結果発表！</h2>
+            <p>とく点: <span id="final-score">0</span> ポイント</p>
+            <p>せいかい数: <span id="correct-answers-count">0</span> 問</p>
+            <p id="result-message"></p>
+            <button id="back-to-main-btn">メイン画面へ</button>
+        </div>
+
+        <div id="maou-win-screen" class="screen">
+            <h2>魔王をたおした！ゲームクリア！</h2>
+            <img src="images/hero.png" alt="勇者" class="hero-char-win">
+            <p>おめでとう！きみは真の知識の勇者だ！</p>
+            <button id="restart-game-btn">最初からやり直す</button>
+        </div>
     </div>
 
-    <div id="startScreen" class="screen">
-      <div class="character">
-        <p class="character-face">👋</p>
-      </div>
-      <p>酸性、中性、アルカリ性の性質を当てて、<br>博士を目指そう！</p>
-      <button id="startButton" class="start-button">ゲームスタート！</button>
-    </div>
-
-    <div id="gameScreen" class="screen hidden">
-      <div class="score-area">
-        <p class="question-number">第<span id="questionNum">1</span>問</p>
-        <p class="score">スコア: <span id="score">0</span></p>
-      </div>
-
-      <div class="character">
-        <p id="characterFace" class="character-face">🤔</p>
-      </div>
-
-      <div class="question-area">
-        <h2>これは何性でしょう？</h2>
-        <p id="questionText"></p>
-      </div>
-      
-      <div class="button-area">
-        <button class="choice-button acid-button" data-answer="酸性">1. 酸性</button>
-        <button class="choice-button neutral-button" data-answer="中性">2. 中性</button>
-        <button class="choice-button alkali-button" data-answer="アルカリ性">3. アルカリ性</button>
-      </div>
-
-      <div id="feedback" class="feedback hidden">
-        <p id="feedbackText"></p>
-      </div>
-    </div>
-
-    <div id="resultScreen" class="screen hidden">
-      <h2 id="resultTitle"></h2>
-      <div class="character">
-        <p id="resultCharacter" class="character-face"></p>
-      </div>
-      <div class="result-score">
-        <p>あなたのスコア: <span id="finalScore">0</span> / 10 問</p>
-        <p id="resultMessage"></p>
-      </div>
-      <button id="restartButton" class="start-button">もう一度遊ぶ</button>
-    </div>
-  </div>
-
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
