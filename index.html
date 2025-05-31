@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>バトルクイズゲーム</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="game-header">
+      <h1>バトルクイズゲーム</h1>
+      <p>液体の性質を当ててみよう！</p>
+    </div>
+
+    <div id="startScreen" class="screen">
+      <div class="character">
+        <p class="character-face">👋</p>
+      </div>
+      <p>酸性、中性、アルカリ性の性質を当てて、<br>博士を目指そう！</p>
+      <button id="startButton" class="start-button">ゲームスタート！</button>
+    </div>
+
+    <div id="gameScreen" class="screen hidden">
+      <div class="score-area">
+        <p class="question-number">第<span id="questionNum">1</span>問</p>
+        <p class="score">スコア: <span id="score">0</span></p>
+      </div>
+
+      <div class="character">
+        <p id="characterFace" class="character-face">🤔</p>
+      </div>
+
+      <div class="question-area">
+        <h2>これは何性でしょう？</h2>
+        <p id="questionText"></p>
+      </div>
+      
+      <div class="button-area">
+        <button class="choice-button acid-button" data-answer="酸性">1. 酸性</button>
+        <button class="choice-button neutral-button" data-answer="中性">2. 中性</button>
+        <button class="choice-button alkali-button" data-answer="アルカリ性">3. アルカリ性</button>
+      </div>
+
+      <div id="feedback" class="feedback hidden">
+        <p id="feedbackText"></p>
+      </div>
+    </div>
+
+    <div id="resultScreen" class="screen hidden">
+      <h2 id="resultTitle"></h2>
+      <div class="character">
+        <p id="resultCharacter" class="character-face"></p>
+      </div>
+      <div class="result-score">
+        <p>あなたのスコア: <span id="finalScore">0</span> / 10 問</p>
+        <p id="resultMessage"></p>
+      </div>
+      <button id="restartButton" class="start-button">もう一度遊ぶ</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
